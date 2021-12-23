@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>193014269+林泽良+青蛙过河</title>
+		<script src="js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			button {
+				border-radius: 6px;
+				height: 40px;
+				color: white;
+				background-color: skyblue;
+				border: 0;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			span {
+				font-weight: bold;
+				margin-left: 20px;
+			}
+			input {
+				border-radius: 4px;
+				border: 2px dotted green;
+				height: 30px;
+				font-size: 18px;
+				padding-left: 8px;
+				outline: none;
+			}
+			
+		</style>
+	</head>
+	<body style="text-align: center">
+		<h1>青 蛙 过 河</h1>
+		<div id="app" style="margin-bottom: 10px !important;">
+			<button @click="ready()">点击开始游戏</button>
+			<button @click="pardon()">再来一次</button>
+			<span>请输入英文字母: </span><input type="text" @keyup="show()" v-model="userString" />
+			<span>累计分数: <span v-text="score" style="margin-left: 2px"></span></span>
+			<span>累计跳跃次数: <span v-text="jumpTimes" style="margin-left: 2px"></span></span>
+		</div>
+		<canvas id="myCanvas" width="800" height="600"></canvas>
+		<script type="text/javascript">
+			let v=new Vue({
+				el:"#app",
+				data:{
+					userString:"",
+					a: 400,
+					b: 400,
+					status: 0,
+					start: 0,
+					score: 0,
+					jumpTimes: 0,
+					flag: 0
+				},
+				methods:{
+					show: function() {
+						if (this.start == 1) {
+							// 加载背景
+							let canvas=document.getElementById("myCanvas");
+							let context= canvas.getContext("2d");
+							let img_background=new Image();
+							img_background.src="./img/background.gif";
+							img_background.onload=function(){
+								context.drawImage(img_background,0,0);
+							}
+							 
+							// 显示青蛙
+							let img_frog=new Image();
+							img_frog.src="./img/frog.gif";
+							img_frog.onload=function(){
+								context.drawImage(img_frog,400,400);
+							}
+							
+							string = this.userString.trim();
+							// 判断条件
+							if(string == "hello" && this.status == 0){
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,260,275);
+								}
+								this.a = 260;
+								this.b = 275;
+								this.status = 1;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "world" && this.status == 1) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,450,175);
+								}
+								this.a = 450;
+								this.b = 175;
+								this.status = 2;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "hi" && this.status == 2) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,290,60);
+								}
+								this.a = 400;
+								this.b = 400;
+								this.score += 15;
+								this.jumpTimes++;
+								this.start = 2;
+								this.status = 0;
+								this.flag = 1;
+							} else {
+								// 获取上次位置，保持不动
+								var x = this.a;
+								var y = this.b;
+								img_frog.onload = function(){
+									context.drawImage(img_frog,x,y);
+								}
+							}
+						} else if (this.start == 2) {
+							// 加载背景
+							let canvas=document.getElementById("myCanvas");
+							let context= canvas.getContext("2d");
+							let img_background=new Image();
+							img_background.src="./img/second.png";
+							img_background.onload=function(){
+								context.drawImage(img_background,0,0);
+							}
+							 
+							// 显示青蛙
+							let img_frog=new Image();
+							img_frog.src="./img/frog.gif";
+							img_frog.onload=function(){
+								context.drawImage(img_frog,400,400);
+							}
+							
+							string = this.userString.trim();
+							if (this.flag == 1) {
+								alert('即将进入下一关！');
+								this.flag = 0;
+							}
+							// 判断条件
+							if(string == "tangle" && this.status == 0){
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,550,340);
+								}
+								this.a = 550;
+								this.b = 340;
+								this.status = 1;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "session" && this.status == 1) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,230,340);
+								}
+								this.a = 230;
+								this.b = 340;
+								this.status = 2;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "discharge" && this.status == 2) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,100,250);
+								}
+								this.a = 100;
+								this.b = 250;
+								this.status = 3;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "aglow" && this.status == 3) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,420,250);
+								}
+								this.a = 420;
+								this.b = 250;
+								this.status = 4;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "fluffy" && this.status == 4) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,550,150);
+								}
+								this.a = 550;
+								this.b = 150;
+								this.status = 5;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "sculpture" && this.status == 5) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,230,150);
+								}
+								this.a = 230;
+								this.b = 150;
+								this.status = 6;
+								this.score += 15;
+								this.jumpTimes++;
+							} else if (string == "hi" && this.status == 6) {
+								this.userString="";
+								img_frog.onload = function(){
+									context.drawImage(img_frog,290,60);
+								}
+								this.a = 290;
+								this.b = 60;
+								this.score += 15;
+								this.jumpTimes++;
+								this.start = 3;
+								this.status = 0;
+							} else {
+								// 获取上次位置，保持不动
+								var x = this.a;
+								var y = this.b;
+								img_frog.onload = function(){
+									context.drawImage(img_frog,x,y);
+								}
+							}
+						} else if (this.start == 3) {
+							alert('恭喜通关！');
+						}
+					},
+					ready: function() {
+						if (this.start == 0) {							
+							this.start = 1;
+							this.show();
+						}
+					},
+					pardon: function() {
+						this.a = 400;
+						this.b = 400;
+						this.status = 0;
+						this.show();
+						
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
